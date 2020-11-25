@@ -4,6 +4,7 @@
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Twitter\Controller\TweetController;
+use Twitter\Model\TweetModel;
 
 class TweetControllerTest extends TestCase
 {
@@ -19,7 +20,8 @@ class TweetControllerTest extends TestCase
         $db->query('INSERT INTO tweet SET author = "Magalie", content = "Un autre tweet", published_at = NOW()');
         $db->query('INSERT INTO tweet SET author = "Elise", content = "Autre tweet encore", published_at = NOW()');
 
-        $controller = new TweetController($db);
+        $model = new TweetModel($db);
+        $controller = new TweetController($model);
         $response = $controller->listTweets();
 
         $this->assertStringContainsString('<ul>', $response->getContent());
