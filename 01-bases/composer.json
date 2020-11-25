@@ -1,0 +1,17 @@
+{
+    "name": "kkynex/01-classes",
+    "authors": [
+        {
+            "name": "Damien",
+            "email": "damien@damienvalade.fr"
+        }
+    ],
+    "require": {
+        "cocur/slugify": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Presentation\\": "src/"
+        }
+    }
+}
