@@ -11,35 +11,34 @@ class QueryBuilder
 
     public function __construct(string $table)
     {
-        $this->from = " FROM ". $table;
+        $this->from = " FROM " . $table;
     }
 
-     public function getQuery(): string
-     {
-         if($this->select == '')
-         {
-             $this->select = 'SELECT *';
-         }
+    public function getQuery(): string
+    {
+        if ($this->select == '') {
+            $this->select = 'SELECT *';
+        }
 
-         return $this->select
-             . $this->from
-             . $this->where
-             . $this->limit;
-     }
+        return $this->select
+            . $this->from
+            . $this->where
+            . $this->limit;
+    }
 
-     public function select(string $select): QueryBuilder
-     {
-         $this->select = 'SELECT ' . $select;
-         return $this;
-     }
+    public function select(string $select): QueryBuilder
+    {
+        $this->select = 'SELECT ' . $select;
+        return $this;
+    }
 
     public function addSelect(string $select): QueryBuilder
     {
 
-        if(!$this->select){
+        if (!$this->select) {
             $this->select($select);
-        }else{
-            if($select[0] != ','){
+        } else {
+            if ($select[0] != ',') {
                 $select = ', ' . $select;
             }
             $this->select .= $select;
@@ -48,7 +47,7 @@ class QueryBuilder
         return $this;
     }
 
-     public function where(string $where): QueryBuilder
+    public function where(string $where): QueryBuilder
     {
         $this->where = " WHERE " . $where;
         return $this;
