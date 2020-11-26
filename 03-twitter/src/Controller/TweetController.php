@@ -3,12 +3,11 @@
 
 namespace Twitter\Controller;
 
-use PDO;
 use Twitter\Http\Request;
 use Twitter\Http\Response;
 use Twitter\Model\TweetModel;
 
-class TweetController
+class TweetController extends Controller
 {
     protected TweetModel $model;
 
@@ -23,28 +22,26 @@ class TweetController
      */
     public function listTweets(): Response
     {
-        $tweets = $this->model->findAll();
-
-        ob_start();
-        require_once(__DIR__ .'/../../templates/tweet/list.html.php');
-        $result = ob_get_clean();
-
-        return new Response($result);
+        return $this->render('tweet/list.html.php', [
+            "tweets" => $this->model->findAll(),
+            "firstname" => "Damien"
+        ]);
     }
 
     public function getForm(): Response
     {
-        ob_start();
-        require_once(__DIR__ .'/../../templates/tweet/form.html.php');
-        $result = ob_get_clean();
-
-        return new Response($result);
+        return $this->render('tweet/form.html.php');
     }
 
     public function saveTweet(Request $request): Response
     {
-        $content = $request->get('content');
-        $this->model->insert('Damien', $content);
-        return new Response();
+        $this->model->insert('Damien', $request->get('content'));
+        return $this->redirect('/');
+    }
+
+    public function deleteTweet(Request $request): Response
+    {
+        $this->model->delete($request->get('id'));
+        return $this->redirect('/');
     }
 }

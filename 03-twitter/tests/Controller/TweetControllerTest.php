@@ -18,15 +18,15 @@ class TweetControllerTest extends TestCase
     {
         $this->db = PDOFactory::getPdo();
         $this->db->query('DELETE FROM tweet');
-        $this->model= new TweetModel($this->db);
+        $this->model = new TweetModel($this->db);
         $this->controller = new TweetController($this->model);
     }
 
     public function testAccessListTweets()
     {
-        $this->db->query('INSERT INTO tweet SET author = "Lior", content = "Mon tweet de test", published_at = NOW()');
-        $this->db->query('INSERT INTO tweet SET author = "Magalie", content = "Un autre tweet", published_at = NOW()');
-        $this->db->query('INSERT INTO tweet SET author = "Elise", content = "Autre tweet encore", published_at = NOW()');
+        $this->model->insert('Lior','Mon tweet de test');
+        $this->model->insert('Magalie','Un autre tweet');
+        $this->model->insert('Elise','Autre tweet encore');
 
         $response = $this->controller->listTweets();
 
@@ -65,13 +65,33 @@ class TweetControllerTest extends TestCase
             "content" => "Le contenue de fou"
         ]);
 
-        $this->controller->saveTweet($request);
+        $response = $this->controller->saveTweet($request);
 
-        $dbRequest = $this->db->prepare('SELECT t.* FROM tweet t WHERE content = :content');
-        $dbRequest->execute([
-           "content" => "Le contenue de fou"
+        $data = $this->model->findByContent('Le contenue de fou');
+
+        $this->assertCount(1, $data);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('/', $response->getHeader('Location'));
+    }
+
+    public function testDeleteTweet()
+    {
+        $this->db->query('INSERT INTO tweet SET author = "Lior", content = "Mon tweet de test", published_at = NOW()');
+        $id = $this->db->lastInsertId();
+
+        $request = new Request([
+            'id' => $id
         ]);
 
-        $this->assertEquals(1, $dbRequest->rowCount());
+        $response = $this->controller->deleteTweet($request);
+
+        $query = $this->db->prepare('SELECT t.* FROM tweet t WHERE id = :id');
+        $query->execute([
+            "id" => $id
+        ]);
+        $this->assertEquals(0, $query->rowCount());
+
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('/', $response->getHeader('Location'));
     }
 }

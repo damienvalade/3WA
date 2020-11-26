@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Twitter\Http;
 
 class Response
@@ -47,6 +48,11 @@ class Response
     public function setHeaders(array $headers)
     {
         $this->headers = $headers;
+    }
+
+    public function getHeader(string $name): ?string
+    {
+        return $this->headers[$name] ?? null;
     }
 
     public function getContent(): string
