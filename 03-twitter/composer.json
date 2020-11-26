@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Twitter\\": "src/"
+            "Twitter\\": "src/",
+            "Test\\": "tests/"
         }
     }
 }

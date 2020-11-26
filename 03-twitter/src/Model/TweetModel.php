@@ -19,4 +19,13 @@ class TweetModel
             ->query("SELECT t.* FROM tweet t")
             ->fetchAll();
     }
+
+    public function insert(string $author, string $content)
+    {
+        $request = $this->db->prepare('INSERT INTO tweet SET author = :author, content = :content, published_at = NOW()');
+        $request->execute([
+            "author" => $author,
+            "content" => $content
+        ]);
+    }
 }

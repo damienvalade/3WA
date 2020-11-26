@@ -4,6 +4,7 @@
 namespace Twitter\Controller;
 
 use PDO;
+use Twitter\Http\Request;
 use Twitter\Http\Response;
 use Twitter\Model\TweetModel;
 
@@ -29,5 +30,21 @@ class TweetController
         $result = ob_get_clean();
 
         return new Response($result);
+    }
+
+    public function getForm(): Response
+    {
+        ob_start();
+        require_once(__DIR__ .'/../../templates/tweet/form.html.php');
+        $result = ob_get_clean();
+
+        return new Response($result);
+    }
+
+    public function saveTweet(Request $request): Response
+    {
+        $content = $request->get('content');
+        $this->model->insert('Damien', $content);
+        return new Response();
     }
 }

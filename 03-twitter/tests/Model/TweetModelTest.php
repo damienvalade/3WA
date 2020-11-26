@@ -2,6 +2,7 @@
 
 
 use PHPUnit\Framework\TestCase;
+use Test\PDOFactory;
 use Twitter\Model\LogTweetModel;
 use Twitter\Model\TweetModel;
 
@@ -9,9 +10,7 @@ class TweetModelTest extends TestCase
 {
     public function testSelectAll()
     {
-        $db = new PDO('mysql:host=localhost;dbname=twitter_test', 'root', '',[
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
+        $db = PDOFactory::getPdo();
 
         $db->query('DELETE FROM tweet');
 
