@@ -16,9 +16,7 @@ class QueryBuilder
 
     public function getQuery(): string
     {
-        if ($this->select == '') {
-            $this->select = 'SELECT *';
-        }
+        $this->select = $this->select ? $this->select : 'SELECT *';
 
         return $this->select
             . $this->from
@@ -38,9 +36,7 @@ class QueryBuilder
         if (!$this->select) {
             $this->select($select);
         } else {
-            if ($select[0] != ',') {
-                $select = ', ' . $select;
-            }
+            $select = $select[0] != ',' ? ', ' . $select : $select;
             $this->select .= $select;
         }
 
