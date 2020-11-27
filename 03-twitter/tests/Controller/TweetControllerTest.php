@@ -76,8 +76,7 @@ class TweetControllerTest extends TestCase
 
     public function testDeleteTweet()
     {
-        $this->db->query('INSERT INTO tweet SET author = "Lior", content = "Mon tweet de test", published_at = NOW()');
-        $id = $this->db->lastInsertId();
+        $id = $this->model->insert("Lior", "Mon tweet de test");
 
         $request = new Request([
             'id' => $id
@@ -85,11 +84,8 @@ class TweetControllerTest extends TestCase
 
         $response = $this->controller->deleteTweet($request);
 
-        $query = $this->db->prepare('SELECT t.* FROM tweet t WHERE id = :id');
-        $query->execute([
-            "id" => $id
-        ]);
-        $this->assertEquals(0, $query->rowCount());
+        $query = $this->model->findById($id);
+        $this->assertFalse($query);
 
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals('/', $response->getHeader('Location'));

@@ -8,7 +8,9 @@
             "email": "damien@damienvalade.fr"
         }
     ],
-    "require": {},
+    "require": {
+        "jajo/jsondb": "^2.1"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9.4",
         "spatie/phpunit-watcher": "^1.23",

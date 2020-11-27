@@ -29,6 +29,15 @@ class TweetModel
         return $dbRequest->fetchAll();
     }
 
+    public function findById($id)
+    {
+        $dbRequest = $this->db->prepare('SELECT t.* FROM tweet t WHERE id = :id');
+        $dbRequest->execute([
+            "id" => $id
+        ]);
+        return $dbRequest->fetch();
+    }
+
     public function insert(string $author, string $content)
     {
         $query = $this->db->prepare('INSERT INTO tweet SET author = :author, content = :content, published_at = NOW()');
@@ -36,6 +45,7 @@ class TweetModel
             "author" => $author,
             "content" => $content
         ]);
+        return $this->db->lastInsertId();
     }
 
     public function delete(int $id)
