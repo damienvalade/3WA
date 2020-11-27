@@ -4,7 +4,7 @@ namespace Twitter\Model;
 
 use PDO;
 
-class TweetModel
+class TweetModel implements TweetModelInterface
 {
     protected PDO $db;
 
@@ -26,7 +26,7 @@ class TweetModel
         $dbRequest->execute([
             "content" => $content
         ]);
-        return $dbRequest->fetchAll();
+        return $dbRequest->fetch();
     }
 
     public function findById($id)

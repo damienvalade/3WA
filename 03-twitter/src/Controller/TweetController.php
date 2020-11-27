@@ -7,13 +7,14 @@ use Twitter\Http\Request;
 use Twitter\Http\Response;
 use Twitter\Model\JsonTweetModel;
 use Twitter\Model\TweetModel;
+use Twitter\Model\TweetModelInterface;
 
 class TweetController extends Controller
 {
-    protected JsonTweetModel $model;
+    protected TweetModelInterface $model;
 
     public function __Construct(
-        JsonTweetModel $model
+        TweetModelInterface $model
     ){
         $this->model = $model;
     }

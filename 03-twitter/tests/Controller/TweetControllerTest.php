@@ -9,27 +9,29 @@ use Twitter\Controller\TweetController;
 use Twitter\Http\Request;
 use Twitter\Model\JsonTweetModel;
 use Twitter\Model\TweetModel;
+use Twitter\Model\TweetModelInterface;
 
 class TweetControllerTest extends TestCase
 {
-    protected JSONDB $db;
-    protected JsonTweetModel $model;
+    protected PDO $db;
+    protected TweetModelInterface $model;
     protected TweetController $controller;
 
     public function setUp(): void
     {
-        //$this->db = PDOFactory::getPdo();
-        $this->db = new JSONDB(__DIR__ . '/../../json');
+        $this->db = PDOFactory::getPdo();
+        //$this->db = new JSONDB(__DIR__ . '/../../json');
 
-        //$this->db->query('DELETE FROM tweet');
-        $this->db->delete()
+        $this->db->query('DELETE FROM tweet');
+        /*$this->db->delete()
             ->from('tweet.json')
             ->trigger();
+        */
 
-        //$this->model = new TweetModel($this->db);
-        //$this->controller = new TweetController($this->model);
-        $this->model = new JsonTweetModel($this->db);
+        $this->model = new TweetModel($this->db);
         $this->controller = new TweetController($this->model);
+        //$this->model = new JsonTweetModel($this->db);
+        //$this->controller = new TweetController($this->model);
     }
 
     public function testAccessListTweets()

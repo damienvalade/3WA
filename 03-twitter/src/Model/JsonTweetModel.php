@@ -7,7 +7,7 @@ namespace Twitter\Model;
 use DateTime;
 use Jajo\JSONDB;
 
-class JsonTweetModel
+class JsonTweetModel implements TweetModelInterface
 {
     protected JSONDB $jsonDb;
 
