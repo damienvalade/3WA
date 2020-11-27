@@ -5,14 +5,15 @@ namespace Twitter\Controller;
 
 use Twitter\Http\Request;
 use Twitter\Http\Response;
+use Twitter\Model\JsonTweetModel;
 use Twitter\Model\TweetModel;
 
 class TweetController extends Controller
 {
-    protected TweetModel $model;
+    protected JsonTweetModel $model;
 
     public function __Construct(
-        TweetModel $model
+        JsonTweetModel $model
     ){
         $this->model = $model;
     }

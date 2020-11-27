@@ -1,24 +1,34 @@
 <?php
 
 
+use Jajo\JSONDB;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Test\PDOFactory;
 use Twitter\Controller\TweetController;
 use Twitter\Http\Request;
+use Twitter\Model\JsonTweetModel;
 use Twitter\Model\TweetModel;
 
 class TweetControllerTest extends TestCase
 {
-    protected PDO $db;
-    protected TweetModel $model;
+    protected JSONDB $db;
+    protected JsonTweetModel $model;
     protected TweetController $controller;
 
     public function setUp(): void
     {
-        $this->db = PDOFactory::getPdo();
-        $this->db->query('DELETE FROM tweet');
-        $this->model = new TweetModel($this->db);
+        //$this->db = PDOFactory::getPdo();
+        $this->db = new JSONDB(__DIR__ . '/../../json');
+
+        //$this->db->query('DELETE FROM tweet');
+        $this->db->delete()
+            ->from('tweet.json')
+            ->trigger();
+
+        //$this->model = new TweetModel($this->db);
+        //$this->controller = new TweetController($this->model);
+        $this->model = new JsonTweetModel($this->db);
         $this->controller = new TweetController($this->model);
     }
 
@@ -67,9 +77,9 @@ class TweetControllerTest extends TestCase
 
         $response = $this->controller->saveTweet($request);
 
-        $data = $this->model->findByContent('Le contenue de fou');
+        $tweet = $this->model->findByContent('Le contenue de fou');
 
-        $this->assertCount(1, $data);
+        $this->assertIsObject($tweet);
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertEquals('/', $response->getHeader('Location'));
     }

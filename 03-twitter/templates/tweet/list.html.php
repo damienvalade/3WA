@@ -2,6 +2,6 @@
 
 <ul>
     <?php foreach ($tweets as $tweet) : ?>
-    <li><?= $tweet['content'] ?></li>
+    <li><?= $tweet->content ?></li>
     <?php endforeach; ?>
 </ul>
